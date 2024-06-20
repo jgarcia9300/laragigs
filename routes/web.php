@@ -2,14 +2,24 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Models\Listing;
 
+//All listings
 Route::get('/', function () {
     return view('listings', [ 
-      'heading' => 'Latest Listings'// is the data being passed to the view.
+      'heading' => 'Latest Listings',
+      'listings' => Listing::all()
+      // is the data being passed to the view.
     ]);
 });
 
+//Singles Listenig
 
+Route::get('/listings/{id}', function ($id){
+  return view('listing', [
+    'listings' => Listing::find($id)
+  ]);
+});
 
 
 // #uso de rutas -> acceder a propiedades o metodos del objeto
