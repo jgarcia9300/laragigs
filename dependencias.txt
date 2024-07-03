@@ -1,0 +1,2 @@
+extension chrome clockwork
+composer require itsgoingd/clockwork
