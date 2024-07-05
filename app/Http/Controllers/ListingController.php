@@ -43,7 +43,12 @@ class ListingController extends Controller
         'description' => 'required'
       ]);
 
-      return redirect('/'); //se redirige a la pagina principal
+      Listing::create($formFields);
+
+
+      return redirect('/')->with('message', 'Listing created successfully!'); //se redirige a la pagina principal ->with es un metodo que se encarga de enviar un mensaje a la vista
+
+  
     }
 
 
