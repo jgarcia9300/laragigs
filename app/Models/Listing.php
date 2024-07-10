@@ -19,6 +19,7 @@ class Listing extends Model
     //     'description'
     // ];
 
+    //scopeFilter es un metodo que se encarga de filtrar los listados por tag y search. para llamar la funcion no es necesario poner scope, solo  se llama como un metodo normal Listing::filter()
     public function scopeFilter($query , array $filters) {
         if($filters['tag'] ?? false){
             $query->where('tags', 'like', '%' . request('tag') . '%' );

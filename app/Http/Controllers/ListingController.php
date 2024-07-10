@@ -47,6 +47,10 @@ class ListingController extends Controller
       'description' => 'required'
     ]);
 
+    if($request->hasFile('logo')){ //si la peticion tiene un archivo llamado logo
+      $formFields['logo'] = $request->file('logo')->store('logos', 'public'); //se guarda el archivo en la carpeta logos del disco public (configurado en config/filesystems.php)
+    }
+
     Listing::create($formFields);
 
 
@@ -54,4 +58,44 @@ class ListingController extends Controller
 
 
   }
+
+
+  //Edit Listing
+  public function edit(Listing $listing){
+    return view('listings.edit', [
+      'listing' => $listing
+    ]);
+  }
+
+  // Update Listing Data
+  public function update(Request $request, Listing $listing)
+  {
+    $formFields = $request->validate([ //se valida que los campos del formulario sean correctos
+      'title' => 'required',
+      'company' => 'required',
+      'location' => 'required',
+      'website' => 'required',
+      'email' => ['required', 'email'],
+      'tags' => 'required',
+      'description' => 'required'
+    ]);
+
+    if($request->hasFile('logo')){ //si la peticion tiene un archivo llamado logo
+      $formFields['logo'] = $request->file('logo')->store('logos', 'public'); //se guarda el archivo en la carpeta logos del disco public (configurado en config/filesystems.php)
+    }
+
+    $listing->update($formFields);
+
+
+    return back()->with('message', 'Listing update successfully!'); //se redirige a la pagina anterior ->with es un metodo que se encarga de enviar un mensaje a la vista
+
+  }
+
+  // Delete Listing
+
+  public function destroy(Listing $listing){
+    $listing->delete();
+    return redirect('/')->with('message', 'Listing deleted successfully!'); //se redirige a la pagina principal ->with es un metodo que se encarga de enviar un mensaje a la vista
+  }
+
 }
