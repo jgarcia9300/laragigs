@@ -49,3 +49,19 @@ Route::get('/listings/{listing}',  [ListingController::class, 'show']); //esta l
 
 //Show Register/Create Form
 Route::get('/register',  [UserController::class, 'create']); //esta linea de codigo es la que se encarga de mostrar la vista de registro de un usuario en donde UserController es el controlador y create es el metodo que se encarga de mostrar la vista de registro de un usuario
+
+//Create new User
+
+Route::post('/users', [UserController::class, 'store']);
+
+//Log User Out
+
+Route::post('/logout', [UserController::class, 'logout']);
+
+//Show Login Form
+
+Route::get('/login', [UserController::class, 'login']);
+
+//Log in user 
+
+Route::post('/users/authenticate', [UserController::class, 'authenticate']);
