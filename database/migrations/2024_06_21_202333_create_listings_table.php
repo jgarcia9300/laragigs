@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('listings', function (Blueprint $table) {
-            $table->id();
+            $table->id(); //crea un campo de tipo id
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); //crea un campo de tipo foreignId que se relaciona con la tabla de usuarios ->constrained()->onDelete('cascade') es una restriccion que se encarga de eliminar los listados de un usuario si el usuario es eliminado
             $table->string('title');
             $table->string('logo')->nullable();
             $table->string('tags');

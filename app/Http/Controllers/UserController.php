@@ -75,6 +75,6 @@ class UserController extends Controller
 
     }
 
-    return back()->withErrors();
+    return back()->withErrors(['email' => 'Invalid credentials'])->onlyInput('email');//si las credenciales son incorrectas, se redirige al login con un mensaje de error. OnlyInput es para que solo se muestre el campo de email cuando se redirige al login en caso de error
   }
 }

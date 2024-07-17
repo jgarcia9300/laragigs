@@ -51,6 +51,8 @@ class ListingController extends Controller
       $formFields['logo'] = $request->file('logo')->store('logos', 'public'); //se guarda el archivo en la carpeta logos del disco public (configurado en config/filesystems.php)
     }
 
+    $formFields['user_id'] = auth()->id(); //se agrega el id del usuario autenticado al array de campos del formulario
+
     Listing::create($formFields);
 
 
@@ -70,6 +72,12 @@ class ListingController extends Controller
   // Update Listing Data
   public function update(Request $request, Listing $listing)
   {
+    //make sure logged in user is the owner of the listing
+
+    if($listing->user_id != auth()->id()){
+      abort(403, 'Unauthorized Action');
+    }
+
     $formFields = $request->validate([ //se valida que los campos del formulario sean correctos
       'title' => 'required',
       'company' => 'required',
@@ -84,8 +92,7 @@ class ListingController extends Controller
       $formFields['logo'] = $request->file('logo')->store('logos', 'public'); //se guarda el archivo en la carpeta logos del disco public (configurado en config/filesystems.php)
     }
 
-    $listing->update($formFields);
-
+  $listing->update($formFields);
 
     return back()->with('message', 'Listing update successfully!'); //se redirige a la pagina anterior ->with es un metodo que se encarga de enviar un mensaje a la vista
 
@@ -94,8 +101,20 @@ class ListingController extends Controller
   // Delete Listing
 
   public function destroy(Listing $listing){
+        //make sure logged in user is the owner of the listing
+
+        if($listing->user_id != auth()->id()){
+          abort(403, 'Unauthorized Action');
+        }
     $listing->delete();
     return redirect('/')->with('message', 'Listing deleted successfully!'); //se redirige a la pagina principal ->with es un metodo que se encarga de enviar un mensaje a la vista
   }
 
+  // Manage Listings
+
+  public function manage(){
+    return view('listings.manage', [
+      'listings' => auth()->user()->listings()->get()]);//se obtienen los listados del usuario autenticado
+
+}
 }
